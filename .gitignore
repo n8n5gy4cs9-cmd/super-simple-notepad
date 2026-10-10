@@ -1,0 +1,3 @@
+# secrets + server data must never be committed
+api/config.php
+data/

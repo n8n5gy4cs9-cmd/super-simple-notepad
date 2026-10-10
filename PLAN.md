@@ -1,4 +1,4 @@
-# Super Simple Notepad — Plan
+# Jot — Plan
 
 ## Goal
 A notepad that opens instantly into a huge, unformatted, monospace plain-text page,
@@ -41,9 +41,9 @@ sw.js, manifest.webmanifest   offline / installable PWA
 - Console panel is toggleable, resizable by tapping a handle; preview is full-screen by default.
 
 ### Storage schema (`localStorage`)
-- `ssn:v1:settings` – theme, font, size, wrap, line numbers, tab size, etc.
-- `ssn:v1:notes`    – array of `{id,title,text,mode,lang,created,updated,pinned}`
-- `ssn:v1:current`  – active note id
+- `jot:v1:settings` – theme, font, size, wrap, line numbers, tab size, etc.
+- `jot:v1:notes`    – array of `{id,title,text,mode,lang,created,updated,pinned}`
+- `jot:v1:current`  – active note id
 - Autosave debounced 400ms + on `visibilitychange`/`pagehide`.
 
 ### PHP
@@ -58,3 +58,9 @@ High-contrast / special: Terminal Green, Amber CRT
 
 ## Milestones
 See `TASKS.md`.
+
+## Install & updates (Android PWA)
+- `manifest.webmanifest`: standalone, themed, maskable icons 192/512, shortcuts ("New note").
+- **No stale assets.** `sw.js` is network-first for every app file (fetch with `cache: 'no-cache'` so the HTTP cache is revalidated) and only falls back to its cache offline. The SW is registered with `updateViaCache: 'none'`; `skipWaiting` + `clients.claim`; when a new SW takes over the page shows an "Updated — reload" toast.
+- `.htaccess` sends `Cache-Control: no-cache` for html/js/css/sw/manifest (fonts/vendor are long-cached because they are versioned by path).
+- Release rule: bump `VERSION` in `sw.js`.

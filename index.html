@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<title>Jot</title>
+<meta name="description" content="Plain text first. Markdown, code and an HTML runner when you need them.">
+<meta name="theme-color" content="#1b1514">
+<meta name="color-scheme" content="light dark">
+<meta name="application-name" content="Jot">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jot">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preload" href="vendor/fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="vendor/codemirror/codemirror.css">
+<link rel="stylesheet" href="vendor/codemirror/addon/foldgutter.css">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/store.js"></script>
+<script src="js/themes.js"></script>
+<script>JotThemes.apply(JotStore.settings.theme);</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5M20 9H10a6 6 0 000 12h3"/></symbol>
+  <symbol id="i-console" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M7.5 10l3 2-3 2M13 15h4"/></symbol>
+  <symbol id="i-device" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 18h2"/></symbol>
+  <symbol id="i-reload" viewBox="0 0 24 24"><path d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h9M19 7h1M4 17h1M11 17h9"/><circle cx="16" cy="7" r="2.2"/><circle cx="8" cy="17" r="2.2"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M9 4h6l-1 6 3 3H7l3-3zM12 13v7"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 00-2-2H6a2 2 0 00-2 2v8a2 2 0 002 2h2"/></symbol>
+  <symbol id="i-zen" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4v13M3 13l4 4 4-4M17 20V7M13 11l4-4 4 4"/></symbol>
+</defs></svg>
+
+<div id="app">
+  <header id="bar">
+    <button id="b-notes" class="ib" title="Notes (Ctrl+K)" aria-label="Notes"><svg><use href="#i-menu"/></svg></button>
+    <input id="title" type="text" placeholder="Untitled" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="done" aria-label="Note title">
+    <button id="b-undo" class="ib wide" title="Undo" aria-label="Undo"><svg><use href="#i-undo"/></svg></button>
+    <button id="b-redo" class="ib wide" title="Redo" aria-label="Redo"><svg><use href="#i-redo"/></svg></button>
+    <button id="b-run" class="ib accent" title="Preview / Run (Ctrl+Enter)" aria-label="Preview" hidden><svg class="ic-play"><use href="#i-play"/></svg><svg class="ic-eye"><use href="#i-eye"/></svg></button>
+    <button id="b-find" class="ib" title="Find (Ctrl+F)" aria-label="Find"><svg><use href="#i-search"/></svg></button>
+    <button id="b-more" class="ib" title="Menu" aria-label="Menu" aria-haspopup="true"><svg><use href="#i-more"/></svg></button>
+  </header>
+
+  <div id="find" hidden>
+    <div class="row">
+      <input id="f-q" type="text" placeholder="Find" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Find">
+      <span id="f-count" aria-live="polite"></span>
+      <button id="f-case" class="ib sm tg" title="Match case" aria-pressed="false">Aa</button>
+      <button id="f-re" class="ib sm tg" title="Regular expression" aria-pressed="false">.*</button>
+      <button id="f-word" class="ib sm tg" title="Whole word" aria-pressed="false">W</button>
+      <button id="f-prev" class="ib sm" title="Previous (Shift+F3)" aria-label="Previous"><svg><use href="#i-up"/></svg></button>
+      <button id="f-next" class="ib sm" title="Next (F3)" aria-label="Next"><svg><use href="#i-down"/></svg></button>
+      <button id="f-swap" class="ib sm" title="Replace" aria-label="Toggle replace"><svg><use href="#i-swap"/></svg></button>
+      <button id="f-close" class="ib sm" title="Close (Esc)" aria-label="Close find"><svg><use href="#i-close"/></svg></button>
+    </div>
+    <div class="row" id="f-rrow" hidden>
+      <input id="f-r" type="text" placeholder="Replace with" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Replace with">
+      <button id="f-rep" class="tx">Replace</button>
+      <button id="f-all" class="tx">All</button>
+    </div>
+  </div>
+
+  <main id="ed">
+    <textarea id="plain" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off" aria-label="Note text" placeholder="Start typing…"></textarea>
+    <div id="code"></div>
+  </main>
+
+  <div id="mdbar" class="tray" hidden></div>
+  <div id="keys" class="tray" hidden></div>
+
+  <footer id="status">
+    <div id="modes" role="group" aria-label="Editor mode">
+      <button data-m="plain" title="Plain text">Text</button>
+      <button data-m="md" title="Markdown (colourised)">MD</button>
+      <button data-m="code" title="Code editor">Code</button>
+    </div>
+    <select id="lang" aria-label="Language" hidden></select>
+    <span class="sp"></span>
+    <span id="pos"></span>
+    <span id="count" class="wide"></span>
+    <span id="saved" class="dot" title="Saved"></span>
+  </footer>
+</div>
+
+<div id="scrim" hidden></div>
+
+<aside id="notes" hidden aria-label="Notes">
+  <div class="phead">
+    <input id="n-q" type="search" placeholder="Search notes" autocomplete="off" spellcheck="false" aria-label="Search notes">
+    <button id="n-new" class="ib accent" title="New note (Alt+N)" aria-label="New note"><svg><use href="#i-plus"/></svg></button>
+  </div>
+  <div id="n-list" role="list"></div>
+  <div class="pfoot"><span id="n-info"></span></div>
+</aside>
+
+<div id="menu" hidden role="menu"></div>
+
+<section id="settings" hidden aria-label="Settings">
+  <div class="phead"><h2>Settings</h2><button class="ib" data-close aria-label="Close settings"><svg><use href="#i-close"/></svg></button></div>
+  <div class="pbody">
+    <h3>Theme</h3>
+    <div id="s-themes" role="radiogroup" aria-label="Theme"></div>
+
+    <h3>Text</h3>
+    <label class="f"><span>Font</span><select data-s="font">
+      <option value="jetbrains">JetBrains Mono</option><option value="plex">IBM Plex Mono</option>
+      <option value="fira">Fira Code</option><option value="source">Source Code Pro</option>
+      <option value="system">System mono</option><option value="courier">Courier</option>
+    </select></label>
+    <label class="f"><span>Size <b data-v="size"></b></span><input type="range" data-s="size" min="11" max="28" step="1"></label>
+    <label class="f"><span>Line height <b data-v="lineHeight"></b></span><input type="range" data-s="lineHeight" min="1.2" max="2.2" step="0.05"></label>
+    <label class="f"><span>Column width</span><select data-s="measure" data-num>
+      <option value="0">Full width</option><option value="72">72 chars</option><option value="90">90 chars</option><option value="110">110 chars</option>
+    </select></label>
+    <label class="f chk"><span>Wrap long lines</span><input type="checkbox" data-s="wrap"></label>
+    <label class="f chk"><span>Spell check (text &amp; markdown)</span><input type="checkbox" data-s="spell"></label>
+    <label class="f chk"><span>Scroll past the end</span><input type="checkbox" data-s="pastEnd"></label>
+
+    <h3>Code &amp; markdown</h3>
+    <label class="f chk"><span>Line numbers</span><input type="checkbox" data-s="lineNumbers"></label>
+    <label class="f chk"><span>Code folding</span><input type="checkbox" data-s="fold"></label>
+    <label class="f chk"><span>Highlight active line</span><input type="checkbox" data-s="activeLine"></label>
+    <label class="f chk"><span>Auto-close brackets</span><input type="checkbox" data-s="brackets"></label>
+    <label class="f"><span>Tab size</span><select data-s="tabSize" data-num><option value="2">2</option><option value="4">4</option><option value="8">8</option></select></label>
+    <label class="f chk"><span>Indent with tab characters</span><input type="checkbox" data-s="tabs"></label>
+    <label class="f"><span>Symbol key row</span><select data-s="keys"><option value="auto">Touch devices</option><option value="on">Always</option><option value="off">Never</option></select></label>
+
+    <h3>Notes</h3>
+    <label class="f"><span>On start open</span><select data-s="startWith"><option value="last">Last note</option><option value="new">A new note</option></select></label>
+    <label class="f"><span>New notes start as</span><select data-s="newMode"><option value="plain">Plain text</option><option value="md">Markdown</option><option value="code">Code</option></select></label>
+
+    <h3>Preview console</h3>
+    <label class="f chk"><span>Open when an error happens</span><input type="checkbox" data-s="conAutoOpen"></label>
+    <label class="f chk"><span>Keep log between runs</span><input type="checkbox" data-s="conKeep"></label>
+    <label class="f chk"><span>Show timestamps</span><input type="checkbox" data-s="conTime"></label>
+
+    <h3>Server sync <small>(optional, PHP)</small></h3>
+    <p class="hint">Everything is saved in this browser. If you host Jot with PHP you can also sync notes to your server. Set a token in <code>api/config.php</code>, then enter the same one here.</p>
+    <label class="f col"><span>API URL</span><input type="text" data-s="syncUrl" autocomplete="off" spellcheck="false" autocapitalize="off"></label>
+    <label class="f col"><span>Token</span><input type="password" data-s="syncToken" autocomplete="off" spellcheck="false"></label>
+    <label class="f chk"><span>Sync automatically after edits</span><input type="checkbox" data-s="syncAuto"></label>
+    <div class="btns"><button id="s-test" class="tx">Test</button><button id="s-sync" class="tx">Sync now</button></div>
+    <p id="s-syncmsg" class="hint" aria-live="polite"></p>
+
+    <h3>Data</h3>
+    <p class="hint" id="s-usage"></p>
+    <div class="btns">
+      <button id="s-export" class="tx">Export backup</button>
+      <button id="s-import" class="tx">Import backup</button>
+    </div>
+    <div class="btns">
+      <button id="s-reset" class="tx">Reset settings</button>
+      <button id="s-wipe" class="tx danger">Delete all notes</button>
+    </div>
+
+    <h3>Shortcuts</h3>
+    <dl class="keys">
+      <dt>Ctrl/⌘ + S</dt><dd>Save &amp; sync</dd>
+      <dt>Ctrl/⌘ + F</dt><dd>Find &amp; replace</dd>
+      <dt>F3 / Shift+F3</dt><dd>Next / previous match</dd>
+      <dt>Ctrl/⌘ + Enter</dt><dd>Preview / run</dd>
+      <dt>Ctrl/⌘ + K</dt><dd>Notes</dd>
+      <dt>Alt + N</dt><dd>New note</dd>
+      <dt>Ctrl/⌘ + /</dt><dd>Toggle comment (code)</dd>
+      <dt>Ctrl/⌘ + D</dt><dd>Duplicate line (code)</dd>
+      <dt>Alt + ↑ / ↓</dt><dd>Move line (code)</dd>
+      <dt>Ctrl/⌘ + Shift + M</dt><dd>Cycle mode</dd>
+      <dt>Ctrl/⌘ + .</dt><dd>Focus mode</dd>
+      <dt>Esc</dt><dd>Close panel / preview</dd>
+    </dl>
+    <p class="hint about">Jot <span id="s-ver"></span> · all libraries are bundled, nothing is loaded from the internet.</p>
+  </div>
+</section>
+
+<div id="pv" hidden role="dialog" aria-label="Preview">
+  <header class="pbar">
+    <button id="pv-close" class="ib" title="Close (Esc)" aria-label="Close preview"><svg><use href="#i-left"/></svg></button>
+    <span id="pv-title"></span>
+    <button id="pv-device" class="ib" title="Width" aria-label="Preview width"><svg><use href="#i-device"/></svg><span></span></button>
+    <button id="pv-reload" class="ib" title="Reload (Ctrl+Enter)" aria-label="Reload"><svg><use href="#i-reload"/></svg></button>
+    <button id="pv-newtab" class="ib" title="Open in new tab" aria-label="Open in new tab"><svg><use href="#i-ext"/></svg></button>
+    <button id="pv-console" class="ib" title="Console" aria-label="Toggle console" aria-pressed="false"><svg><use href="#i-console"/></svg><i id="pv-badge" class="badge" hidden></i></button>
+  </header>
+  <div id="pv-md" hidden></div>
+  <div id="pv-stage"><iframe id="pv-frame" title="Preview" sandbox="allow-scripts"></iframe></div>
+  <section id="pv-con" hidden aria-label="Console">
+    <div id="pv-con-grip" role="separator" aria-label="Resize console"><i></i></div>
+    <div class="chead">
+      <span>Console</span>
+      <span id="pv-filters">
+        <button data-l="error" aria-pressed="true">err</button><button data-l="warn" aria-pressed="true">warn</button><button data-l="log" aria-pressed="true">log</button>
+      </span>
+      <button id="pv-con-clear" class="tx sm">Clear</button>
+    </div>
+    <div id="pv-con-list" role="log" aria-live="off"></div>
+    <form id="pv-con-form"><span>›</span><input id="pv-con-in" type="text" placeholder="Run JavaScript in the page" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send" aria-label="Console input"></form>
+  </section>
+</div>
+
+<button id="zen-exit" class="ib" hidden title="Leave focus mode" aria-label="Leave focus mode"><svg><use href="#i-zen"/></svg></button>
+<div id="toast" role="status" aria-live="polite"></div>
+<input id="file" type="file" hidden multiple>
+<input id="file-backup" type="file" accept=".json,application/json" hidden>
+
+<script src="vendor/marked/marked.min.js"></script>
+<script src="vendor/dompurify/purify.min.js"></script>
+<script src="vendor/codemirror/codemirror.js"></script>
+<script src="vendor/codemirror/mode/meta.js"></script>
+<script src="vendor/codemirror/addon/simple.js"></script>
+<script src="vendor/codemirror/mode/xml.js"></script>
+<script src="vendor/codemirror/mode/javascript.js"></script>
+<script src="vendor/codemirror/mode/css.js"></script>
+<script src="vendor/codemirror/mode/htmlmixed.js"></script>
+<script src="vendor/codemirror/mode/clike.js"></script>
+<script src="vendor/codemirror/mode/php.js"></script>
+<script src="vendor/codemirror/mode/markdown.js"></script>
+<script src="vendor/codemirror/addon/overlay.js"></script>
+<script src="vendor/codemirror/mode/gfm.js"></script>
+<script src="vendor/codemirror/mode/python.js"></script>
+<script src="vendor/codemirror/mode/sql.js"></script>
+<script src="vendor/codemirror/mode/shell.js"></script>
+<script src="vendor/codemirror/mode/yaml.js"></script>
+<script src="vendor/codemirror/mode/properties.js"></script>
+<script src="vendor/codemirror/mode/diff.js"></script>
+<script src="vendor/codemirror/mode/go.js"></script>
+<script src="vendor/codemirror/mode/rust.js"></script>
+<script src="vendor/codemirror/mode/ruby.js"></script>
+<script src="vendor/codemirror/mode/dockerfile.js"></script>
+<script src="vendor/codemirror/mode/toml.js"></script>
+<script src="vendor/codemirror/addon/runmode.js"></script>
+<script src="vendor/codemirror/addon/matchbrackets.js"></script>
+<script src="vendor/codemirror/addon/closebrackets.js"></script>
+<script src="vendor/codemirror/addon/closetag.js"></script>
+<script src="vendor/codemirror/addon/continuelist.js"></script>
+<script src="vendor/codemirror/addon/active-line.js"></script>
+<script src="vendor/codemirror/addon/comment.js"></script>
+<script src="vendor/codemirror/addon/foldcode.js"></script>
+<script src="vendor/codemirror/addon/foldgutter.js"></script>
+<script src="vendor/codemirror/addon/brace-fold.js"></script>
+<script src="vendor/codemirror/addon/xml-fold.js"></script>
+<script src="vendor/codemirror/addon/indent-fold.js"></script>
+<script src="vendor/codemirror/addon/markdown-fold.js"></script>
+<script src="vendor/codemirror/addon/comment-fold.js"></script>
+<script src="js/langs.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/preview.js"></script>
+<script src="js/sync.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
