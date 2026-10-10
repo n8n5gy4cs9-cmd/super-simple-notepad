@@ -1,0 +1,21 @@
+# Tasks
+
+- [ ] 1. Plan + tasks docs
+- [ ] 2. Vendor libs (CodeMirror 5 + modes/addons, marked, DOMPurify) with licences
+- [ ] 3. App shell (index.html), responsive layout, tiny toolbar
+- [ ] 4. Storage layer + settings persistence
+- [ ] 5. Plain textarea editor (default), autosave, restore
+- [ ] 6. 20 themes (UI + CodeMirror)
+- [ ] 7. Notes manager (new, list, search, rename, delete, pin, duplicate)
+- [ ] 8. Markdown mode (colourised source) + toolbar helpers
+- [ ] 9. Code mode (language select, highlight, indent, bracket match, fold)
+- [ ] 10. Markdown preview (fullscreen)
+- [ ] 11. HTML runner (fullscreen) + console (toggle, clear, levels)
+- [ ] 12. Find / replace, go to line, word count, status line
+- [ ] 13. Import / export (.txt .md .html .json backup), drag & drop open
+- [ ] 14. Settings panel (font, size, wrap, line numbers, tab size, theme)
+- [ ] 15. PHP 7.4 save API + client sync
+- [ ] 16. PWA (manifest, service worker, icon)
+- [ ] 17. Keyboard shortcuts + mobile QA (viewport/keyboard)
+- [ ] 18. Tests (headless browser smoke) + README
+- [ ] 19. Commit to main
